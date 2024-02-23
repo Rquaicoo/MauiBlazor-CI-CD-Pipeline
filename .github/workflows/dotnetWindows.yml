@@ -22,6 +22,17 @@ jobs:
         dotnet-version: 6.0.x
     - name: Install MAUI Workload
       run: dotnet workload install maui
+    - name: Decrypt PFX File
+      run: |
+        echo "$({ secrets.WINDOWS.PFX_FILE- )}" > cert.pfx.asc
+        certutil -decode cert.pfx.asc cert.pfx
+    - name: Add Cert to Store
+      run: certutil -user -q -p $({ secrets.WINDOWS_PFX_PASSWORD }) -import cert.pfx NoRoot
     - name: Build
-      run: dotnet build MauiApp1/MauiApp1.csproj -c Release -f:net8.0-windows10.0.19041.0
+      run: dotnet publish MauiApp1/MauiApp1.csproj -c Release -f:net8.0-windows10.0.19041.0 /p:GenerateAppxPackageOnBuild=true /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="$({ secrets.WINDOWS_PFX_THUMBPRINT })"
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifacts@v3.1.0
+      with:
+        path: .\**\AppPackages\**\*.*
+      
    
