@@ -20,8 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: I
-      run: dotnet restore
+    - name: Install MAUI Workload
+      run: dotnet workload install maui
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build MauiApp1/MauiApp1.csproj -c Release -f:net8.0-windows10.0.19041.0
    
