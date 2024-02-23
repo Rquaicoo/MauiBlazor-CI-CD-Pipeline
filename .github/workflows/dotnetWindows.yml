@@ -31,7 +31,7 @@ jobs:
     - name: Build
       run: dotnet publish MauiApp1/MauiApp1.csproj -c Release -f:net8.0-windows10.0.19041.0 /p:GenerateAppxPackageOnBuild=true /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="$({ secrets.WINDOWS_PFX_THUMBPRINT })"
     - name: Upload Build Artifacts
-      uses: actions/upload-artifacts@v3.1.0
+      uses: actions/upload-artifact@v3.1.0
       with:
         path: .\**\AppPackages\**\*.*
       
